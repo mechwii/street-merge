@@ -9,22 +9,50 @@ A merge puzzle set in an empty shop window. Mr. Kim's ground-floor shop has been
 - Aim left or right, release to drop. Two identical pieces merge into the next shop:
   Key → Open sign → Coffee shop → Bakery → Hair salon → Bookshop → Ramen bar → Gym → Mini cinema → Full shopfront → The whole street.
 - Merges caused by the same drop form a chain (×1.5, ×2, up to ×3 points).
-- **Shake** throws the pile up. You start with one and earn another each time you open a new shop from the Bakery on (max 3).
-- If pieces stay above the dashed line for about three seconds, the game ends.
+- **Shake** throws the pile up. You start with one and earn another when you open the Bookshop and the Gym (max 2).
+- If pieces stay above the dashed line for two seconds, the game ends.
+- The higher your score, the more big pieces you get: the game gets harder as you go.
+- Play three days in a row (🔥 streak) to start every game with 2 shakes.
 
 ## Rewards
 
 | Score in one game | Coupon |
 |---|---|
-| 300 | Gung Ramen · free egg topping |
-| 1,200 | Maison Pain · free croissant |
-| 2,500 | Bori Café · 2-for-1 flat white |
-| 4,000 | Studio Mira · 20% off cut + blow-dry |
-| 6,000 | Atelier Fit · first week free |
+| 600 | Gung Ramen · free egg topping |
+| 1,800 | Maison Pain · free croissant |
+| 3,200 | Bori Café · 2-for-1 flat white |
+| 4,800 | Studio Mira · 20% off cut + blow-dry |
+| 7,000 | Atelier Fit · first week free |
 | Build The whole street | Street Pass · one free item at any partner |
 | Finish today's 3 missions | Moa Books · buy 2, get 1 free |
 
 Coupons go to the in-game wallet with a QR code, are valid 24 hours, one per shop per day. Staff redeem them by holding the green bar.
+
+## Extras
+
+- **Music:** a generative lo-fi loop (no audio files) that muffles when the game is paused. Toggle with the ♪ button or `N`.
+- **Hide things:** ☰ Menu → Display & sound lets you hide missions, the reward bar, the shop row and the desktop panels, or turn on Focus mode (`H`). Side panels also have their own ✕.
+- **Realistic ads:** every shop you open plays its ad on the Vitrine screen in the window (6-slot loop, QR, distance) and on its storefront in the street behind. The end screen shows a sponsored card for the next reward.
+
+## Secret codes
+
+Open with `` ` `` or `/`, by tapping the Vitrine logo 5 times, or with ↑↑↓↓←→←→ B A (street party).
+
+| Code | Effect |
+|---|---|
+| STREET | Opens every shop in order and builds The whole street |
+| LOSE | Ends the game now |
+| PARTY | Lights and fireworks on the whole street |
+| RAIN | Twelve keys fall in |
+| RICH | +1,000 points |
+| BIG | Next drop is a Gym |
+| SHAKE | Refill Shake to 3 |
+| SLOWMO | Slow motion on/off |
+| MOON | Low gravity on/off |
+| KIM | Mr. Kim says hi (or double-tap him) |
+| RESET | Clears coupons, missions and best, for a fresh demo |
+
+Runs that use a code are marked DEMO and don't save a best score.
 
 ## Details
 
