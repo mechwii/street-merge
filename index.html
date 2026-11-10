@@ -367,7 +367,7 @@ en:{score:'Score',best:'Best',next:'Next',shake:'Shake',rewards:'Rewards',missio
  demo:'Vitrine pilot · Daejeon. Shops and coupons in this demo are simulated.',
  mAll:'Finish all three to win',mReset:t=>'New missions in '+t,mDone:'Mission complete',mAllDone:'All missions done!',
  resume:'Resume',restart:'Restart',close:'Close',sound:'Sound',music:'Music',lang:'Language',paused:'Paused',menu:'Menu',settings:'Display & sound',
- tMis:'Missions',tGoal:'Reward bar',tChain:'Shop row',tRw:'Rewards panel',tWal:'Coupons panel',tFocus:'Focus mode · hide everything',tRank:'Live rank',tLb:'Board panel',
+ tMis:'Missions',tGoal:'Reward bar',tChain:'Shop row',tRw:'Rewards panel',tWal:'Coupons panel',tFocus:'Focus mode · hide everything',tRank:'Live rank',kimLose:'Wait… too many shops at once!',tLb:'Board panel',
  board:'Leaderboard',boardB:'Board',week:'This week',allTime:'All time',lbHere:w=>`Window ${w}`,lbNote:'Scores are saved on this device, so everyone who plays here shares this board. 🏠 marks the street regulars: beat them all.',
  player:'Player',yourName:'Type your name',seeAll:'See all',lbWeek:w=>`This week at ${w}`,
  rankIs:(r,w)=>`🏆 #${r} this week at ${w}`,rankTop:w=>`🏆 #1 this week at ${w}!`,toPass:(n,p,r)=>`${n} more points to pass ${p} (#${r})`,
@@ -410,7 +410,7 @@ ko:{score:'점수',best:'최고',next:'다음',shake:'흔들기',rewards:'보상
  demo:'Vitrine 대전 파일럿. 이 데모의 가게와 쿠폰은 가상입니다.',
  mAll:'세 개를 모두 완료하면',mReset:t=>t+' 후 새 미션',mDone:'미션 완료',mAllDone:'오늘의 미션 모두 완료!',
  resume:'계속하기',restart:'다시 시작',close:'닫기',sound:'효과음',music:'음악',lang:'언어',paused:'일시정지',menu:'메뉴',settings:'화면 · 소리',
- tMis:'미션',tGoal:'보상 바',tChain:'가게 줄',tRw:'보상 패널',tWal:'쿠폰 패널',tFocus:'집중 모드 · 모두 숨기기',tRank:'실시간 순위',tLb:'순위 패널',
+ tMis:'미션',tGoal:'보상 바',tChain:'가게 줄',tRw:'보상 패널',tWal:'쿠폰 패널',tFocus:'집중 모드 · 모두 숨기기',tRank:'실시간 순위',kimLose:'잠깐… 가게가 너무 많이 몰려와!',tLb:'순위 패널',
  board:'순위표',boardB:'순위',week:'이번 주',allTime:'전체',lbHere:w=>`${w} 창`,lbNote:'점수는 이 기기에 저장돼요. 여기서 플레이한 모두가 같은 순위표를 써요. 🏠는 거리 단골이에요. 모두 이겨 보세요.',
  player:'플레이어',yourName:'이름을 입력하세요',seeAll:'전체 보기',lbWeek:w=>`이번 주 ${w}`,
  rankIs:(r,w)=>`🏆 이번 주 ${w} ${r}위`,rankTop:w=>`🏆 이번 주 ${w} 1위!`,toPass:(n,p,r)=>`${p}(${r}위)까지 ${n}점`,
@@ -581,7 +581,7 @@ function substep(h){
     if(dx>mn||dx<-mn||dy>mn||dy<-mn)continue;
     const d2=dx*dx+dy*dy;if(d2>=mn*mn)continue;
     const d=Math.sqrt(d2)||.001,nx=dx/d,ny=dy/d,pen=mn-d,ia=a.im,ib=b.im;
-    if(a.t===b.t&&!a.dead&&!b.dead&&!S.attract)S.mq.push(a,b);
+    if(a.t===b.t&&!a.dead&&!b.dead&&!S.attract&&!a.nm&&!b.nm)S.mq.push(a,b);
     const s=pen/(ia+ib)*.85;a.x-=nx*s*ia;a.y-=ny*s*ia;b.x+=nx*s*ib;b.y+=ny*s*ib;
     const rvx=(b.vx+b.w*ny*b.r)-(a.vx-a.w*ny*a.r),rvy=(b.vy-b.w*nx*b.r)-(a.vy+a.w*nx*a.r);
     const vn=rvx*nx+rvy*ny;
@@ -1030,7 +1030,8 @@ const missions=(()=>{
   return (sk?`<div class="stk">${esc(tr('streak',sk))}<small>${esc(tr('streakPerk'))}</small></div>`:'')+rows+`<div class="mrw ${d.claimed?'got':''}">${mChip('moa','sp')}<div><b>${esc(d.claimed?tr('mAllDone'):tr('mAll'))}</b><br>${esc(mName('moa'))} · ${esc(mOffer('moa'))}</div></div><p class="fine" style="text-align:center">${esc(tr('mReset',hh+'h '+String(mm).padStart(2,'0')+'m'))}</p>`}
  const count=()=>get().done.filter(Boolean).length;
  function reset(){cache=null;ls.del('day')}
- return{update,onStart,onEnd,html,count,get,reset};
+ function completeAll(){const d=get();d.m.forEach((m,i)=>{d.p[i]=target(m);d.done[i]=true});if(!d.claimed){d.claimed=true;setTimeout(()=>earn('moa'),900)}save();ui.missions()}
+ return{update,onStart,onEnd,html,count,get,reset,completeAll};
 })();
 
 /* ================= modal ================= */
@@ -1063,11 +1064,18 @@ function openHow(section){openModal(esc(tr('how')),b=>{
 function ensurePlay(fn){if(S.state==='play'){fn();return}S.lastStart=0;startGame();setTimeout(fn,60)}
 function markCheat(){if(!S.cheated){S.cheated=true;document.body.classList.add('cheat');if(S.best>S.bestAtStart)S.best=S.bestAtStart;ui.score();toast('','<b>🛠 DEMO</b><small>'+esc(tr('demoRun'))+'</small>',2400)}}
 const CODES={
+ win:['Win everything: whole street, every coupon, all missions, #1',()=>{const go=()=>{markCheat();CODES.street[1]();
+   const target=REWARDS[REWARDS.length-1].at+600,steps=24;let k=0;const iv=setInterval(()=>{if(S.state!=='play'||++k>steps){clearInterval(iv);return}addScore(Math.ceil((target-S.score)/(steps-k+1)))},160);
+   setTimeout(()=>{if(S.state!=='play')return;missions.completeAll();const st=ls.get('streak',{d:'',n:0});if(st.n<3)ls.set('streak',{d:dayKey(),n:3})},4300);
+   setTimeout(()=>{if(S.state==='play')CODES.party[1]()},5600)};
+  if(S.state==='play'){S.lastStart=0;startGame()}ensurePlay(go)}],
  street:['Fill the whole street, in order',()=>ensurePlay(()=>{markCheat();S.balls=[];S.dangerT=0;
   for(let t=1;t<=9;t++)setTimeout(()=>{if(S.state!=='play')return;unlock(t,rnd(L+60,R-60),rnd(250,420),t<9)},t*170);
   setTimeout(()=>{if(S.state!=='play')return;[2,3,4,5,6,7].forEach((t,i)=>{const b=newBall(t,L+40+i*58,FLOOR-140-i*10);S.balls.push(b)});
    const a=newBall(9,W/2-110,DROPY+30),b=newBall(9,W/2+110,DROPY+30);a.vx=320;b.vx=-320;a.age=b.age=0;S.balls.push(a,b)},1750)})],
- lose:['Lose right now',()=>ensurePlay(()=>{markCheat();S.dangerT=OVER_T;gameOver()})],
+ lose:['Watch the window overflow: a real game over',()=>ensurePlay(()=>{markCheat();S.cur=null;const seq=[8,6,7,5,8,7,6,5,8,6,7,5,8,7];kimSay(tr('kimLose'));
+  seq.forEach((t,i)=>setTimeout(()=>{if(S.state!=='play')return;const b=newBall(t,L+50+((i*97)%(R-L-100)),DROPY);b.vy=140;b.age=0;b.nm=true;S.balls.push(b);SFX.drop()},i*170));
+  setTimeout(()=>{if(S.state==='play'){S.dangerT=OVER_T;gameOver()}},7000)})],
  party:['Street party: lights and fireworks',()=>{S.partyT=8;street.update();banner(tr('party'));SFX.win();burst(W/2,260,'#fde68a',120,1.5);S.shakeT=.4;kimJoy=Date.now()+8000;kimLvl=-1;paintKim();setTimeout(()=>{kimLvl=-1;paintKim()},8100)}],
  rain:['Twelve keys fall from the sky',()=>ensurePlay(()=>{markCheat();for(let i=0;i<12;i++)setTimeout(()=>{const b=newBall(0,rnd(L+20,R-20),80);b.age=0;b.vy=200;S.balls.push(b)},i*90)})],
  rich:['+1,000 points',()=>ensurePlay(()=>{markCheat();float(W/2,300,'+1,000','#fde68a',30);addScore(1000)})],

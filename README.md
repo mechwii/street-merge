@@ -49,8 +49,9 @@ Open with `` ` `` or `/`, by tapping the Vitrine logo 5 times, or with ↑↑↓
 
 | Code | Effect |
 |---|---|
+| WIN | Win everything: builds the whole street, wins all 7 coupons, completes the missions, takes #1 on the board, then a street party |
 | STREET | Opens every shop in order and builds The whole street |
-| LOSE | Ends the game now |
+| LOSE | Big shops pour in, the window overflows, the red warning runs, game over (about 5 seconds) |
 | PARTY | Lights and fireworks on the whole street |
 | RAIN | Twelve keys fall in |
 | RICH | +1,000 points |
