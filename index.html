@@ -244,6 +244,32 @@ body.cheat #demoTag{display:inline-block}
 .cgrid button{text-align:left;padding:9px 11px;border-radius:12px;background:#ffffff0a;border:1px solid var(--ln);font-size:12px;color:var(--mu);font-weight:500;line-height:1.3}
 .cgrid button b{display:block;color:var(--tx);font-size:13px;letter-spacing:.06em}
 .cgrid button:hover{border-color:#a78bfa66}
+/* leaderboard */
+#chase{position:absolute;left:50%;top:12px;transform:translate(-50%,-50%);z-index:2;pointer-events:none;background:rgba(17,14,32,.82);border:1px solid #a78bfa40;border-radius:999px;padding:4px 11px;font-size:11.5px;font-weight:700;color:#d8d3f0;white-space:nowrap;max-width:90%;overflow:hidden;text-overflow:ellipsis;transition:opacity .25s;font-variant-numeric:tabular-nums}
+#chase b{color:#fde68a}#chase[hidden]{display:none}
+body.focus #chase,body.no-rank #chase,body.no-lb #pLb{display:none!important}
+.lbt{display:flex;gap:6px;margin:0 0 10px}
+.lbt button{flex:1;padding:8px;border-radius:11px;background:#ffffff0a;border:1px solid var(--ln);font-size:13px;font-weight:700;color:var(--mu)}
+.lbt button.on{background:#8b5cf62a;border-color:#a78bfa66;color:var(--tx)}
+.lb{display:flex;flex-direction:column;gap:3px;text-align:left}
+.lb>div{display:flex;align-items:center;gap:9px;padding:6px 9px;border-radius:11px;background:#ffffff06;font-size:13.5px;font-variant-numeric:tabular-nums}
+.lb>div.me{background:#8b5cf62e;box-shadow:inset 0 0 0 1px #a78bfa66}
+.lb>div.gap{background:none;justify-content:center;color:var(--mu);padding:0;font-size:12px}
+.lb .rk{width:22px;text-align:center;color:var(--mu);font-weight:800;flex:none}
+.lb .chip{width:24px;height:24px;flex:none}
+.lb .nm{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:700;color:#e4e1f2}
+.lb .nm i{font-style:normal;font-size:10px;margin-left:5px}
+.lb .sc{font-weight:800;color:var(--act)}
+.side .lb>div{padding:5px 8px;font-size:13px}
+.lbx{margin:12px 0 2px;text-align:left}
+.lbx h4{display:flex;justify-content:space-between;align-items:center;margin:0 0 6px;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--mu)}
+.lbx h4 button{font-size:11.5px;letter-spacing:0;text-transform:none;color:var(--act);font-weight:700}
+.lbname{display:flex;gap:6px;margin:8px auto 2px;max-width:240px}
+.lbname input{flex:1;min-width:0;text-align:center;background:#0d0b18;border:1px solid var(--ln2);border-radius:11px;padding:8px 11px;font:700 14px var(--font);color:var(--tx);outline:none;-webkit-user-select:text;user-select:text}
+.lbname input:focus{border-color:var(--ac)}
+.rank{margin:6px 0 0;font-size:13.5px;font-weight:800;color:#fde68a}
+.rank small{display:block;color:var(--mu);font-weight:600;font-size:12px}
+@media(max-width:400px){.brand div{display:none}}
 /* street ads */
 .sf .adt{font-family:var(--font);fill:#fff}
 </style>
@@ -252,12 +278,14 @@ body.cheat #demoTag{display:inline-block}
 <svg id="street" aria-hidden="true" preserveAspectRatio="xMidYMax slice"></svg>
 <div id="app">
  <aside id="left" class="side">
+  <section class="panel" id="pLb"><h3><span id="lbTitle"></span><button class="hx" data-hide="lb">✕</button></h3><div id="sideLb"></div></section>
   <section class="panel" id="pRw"><h3><span data-i="rewards"></span><button class="hx" data-hide="rw">✕</button></h3><div id="sideRw"></div></section>
  </aside>
  <main id="main">
   <header id="top">
    <div class="brand"><i class="logo" id="logo"></i><div><b>Street Merge</b><span>by Vitrine</span></div></div>
    <button class="ib" id="bMus" data-a="music"><svg viewBox="0 0 24 24"><path d="M9 18V6l10-2v12"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="16.5" cy="16" r="2.5"/><path id="musX" d="M3 3l18 18"/></svg></button>
+   <button class="ib" id="bLb" data-a="board"><svg viewBox="0 0 24 24"><path d="M8 4h8v5a4 4 0 0 1-8 0z"/><path d="M8 6H5a3 3 0 0 0 3 4M16 6h3a3 3 0 0 1-3 4M12 13v4M8.5 20h7M10 17h4"/></svg></button>
    <button class="ib" id="bMis" data-a="missions"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="1" fill="currentColor"/></svg><span class="bd" id="misBd"></span></button>
    <button class="ib" id="bWal" data-a="wallet"><svg viewBox="0 0 24 24"><path d="M3 9a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v1.5a2 2 0 0 0 0 3V15a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1.5a2 2 0 0 0 0-3z"/><path d="M14 7v10" stroke-dasharray="2 2.4"/></svg><span class="bd" id="walBd"></span></button>
    <button class="ib" id="bMenu" data-a="menu"><svg viewBox="0 0 24 24"><path d="M5 7h14M5 12h14M5 17h14"/></svg></button>
@@ -277,6 +305,7 @@ body.cheat #demoTag{display:inline-block}
   <div id="stage">
    <canvas id="cv"></canvas>
    <div id="says"></div>
+   <div id="chase" hidden></div>
    <div id="toasts"></div>
    <div class="ov" id="title" hidden></div>
    <div class="ov" id="over" hidden></div>
@@ -309,9 +338,9 @@ const HOUR=3600e3;
 const dayKey=(d=new Date())=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
 
 /* ================= settings ================= */
-const SET=Object.assign({music:true,mis:true,goal:true,chain:true,rw:true,wal:true,focus:false},ls.get('set',{}));
+const SET=Object.assign({music:true,mis:true,goal:true,chain:true,rw:true,wal:true,focus:false,rank:true,lb:true},ls.get('set',{}));
 function applySet(){const b=document.body.classList,f=SET.focus;b.toggle('focus',f);
- b.toggle('no-rw',f||!SET.rw);b.toggle('no-mis',f||!SET.mis);b.toggle('no-wal',f||!SET.wal);b.toggle('no-chain',f||!SET.chain);b.toggle('no-goal',f||!SET.goal);
+ b.toggle('no-rw',f||!SET.rw);b.toggle('no-mis',f||!SET.mis);b.toggle('no-wal',f||!SET.wal);b.toggle('no-chain',f||!SET.chain);b.toggle('no-goal',f||!SET.goal);b.toggle('no-rank',f||!SET.rank);b.toggle('no-lb',f||!SET.lb);
  $('#bMus').classList.toggle('off',!SET.music);$('#musX').style.display=SET.music?'none':'';
  if(AC){SET.music?music.start():music.stop()}}
 function saveSet(){ls.set('set',SET);applySet()}
@@ -320,7 +349,7 @@ function saveSet(){ls.set('set',SET);applySet()}
 let LANG=ls.get('lang',null)||((navigator.language||'').toLowerCase().startsWith('ko')?'ko':'en');
 const STR={
 en:{score:'Score',best:'Best',next:'Next',shake:'Shake',rewards:'Rewards',missions:"Today's missions",misShort:'Missions',wallet:'Your coupons',streak:n=>`🔥 ${n}-day streak`,streakPerk:'Play 3 days in a row to start every game with 2 shakes',streakOn:'2 shakes per game',
- keys:'← → aim · Space drop · S shake · P pause · M sound · N music · H focus',
+ keys:'← → aim · Space drop · S shake · P pause · M sound · N music · L board · H focus',
  win:(w,h)=>`Window ${w} · ${h}`,fromAd:m=>`Scanned from the ${m} ad`,
  titleH:"Fill Mr. Kim's<br><em>empty window</em>",
  titleP:'It has been empty for three months. Drop and merge shops to light up the street, and score high to win coupons from the shops nearby.',
@@ -338,7 +367,12 @@ en:{score:'Score',best:'Best',next:'Next',shake:'Shake',rewards:'Rewards',missio
  demo:'Vitrine pilot · Daejeon. Shops and coupons in this demo are simulated.',
  mAll:'Finish all three to win',mReset:t=>'New missions in '+t,mDone:'Mission complete',mAllDone:'All missions done!',
  resume:'Resume',restart:'Restart',close:'Close',sound:'Sound',music:'Music',lang:'Language',paused:'Paused',menu:'Menu',settings:'Display & sound',
- tMis:'Missions',tGoal:'Reward bar',tChain:'Shop row',tRw:'Rewards panel',tWal:'Coupons panel',tFocus:'Focus mode · hide everything',
+ tMis:'Missions',tGoal:'Reward bar',tChain:'Shop row',tRw:'Rewards panel',tWal:'Coupons panel',tFocus:'Focus mode · hide everything',tRank:'Live rank',tLb:'Board panel',
+ board:'Leaderboard',boardB:'Board',week:'This week',allTime:'All time',lbHere:w=>`Window ${w}`,lbNote:'Scores are saved on this device, so everyone who plays here shares this board. 🏠 marks the street regulars: beat them all.',
+ player:'Player',yourName:'Type your name',seeAll:'See all',lbWeek:w=>`This week at ${w}`,
+ rankIs:(r,w)=>`🏆 #${r} this week at ${w}`,rankTop:w=>`🏆 #1 this week at ${w}!`,toPass:(n,p,r)=>`${n} more points to pass ${p} (#${r})`,
+ chase:(r,n,p)=>`#${r} · <b>${n}</b> to pass ${p}`,chaseTop:'#1 at this window',passed:p=>`You passed ${p}`,nowRank:r=>`Now #${r} this week`,
+ titleLb:(p,n)=>`🏆 Next to beat: ${p} · ${n}`,demoNoBoard:'Demo runs are not posted to the board',
  hidden:'Hidden. Turn it back on in ☰ Menu',
  opened:"opened on Mr. Kim's street",openedS:m=>m+' moved in',sponsored:'Sponsored',
  unlockAt:n=>`Unlock it at ${n} pts`,inWallet:'Coupon in your wallet',until:h=>'until '+h,nowOn:'Now showing on the window',
@@ -358,7 +392,7 @@ en:{score:'Score',best:'Best',next:'Next',shake:'Shake',rewards:'Rewards',missio
  kim:['Three months empty… please.','A sign! Is that… a sign?','I smell coffee… Bori Café!','Fresh bread from Maison Pain!','Studio Mira! Fancy haircuts!','Moa Books. Very cultured.','Gung Ramen! People queue!','Atelier Fit? I should go…',"A cinema?! I'm retiring.",'A full shopfront. I cried.','The whole street is lit!'],
  kimFun:['Rent day is my favourite day.','Have you tried the croissants?','My window, my pride.','Scan the QR, young one!','I used to sell socks here.']},
 ko:{score:'점수',best:'최고',next:'다음',shake:'흔들기',rewards:'보상',missions:'오늘의 미션',misShort:'미션',wallet:'내 쿠폰',streak:n=>`🔥 ${n}일 연속`,streakPerk:'3일 연속 플레이하면 매 게임 흔들기 2회로 시작',streakOn:'흔들기 2회',
- keys:'← → 조준 · Space 떨어뜨리기 · S 흔들기 · P 일시정지 · M 소리 · N 음악 · H 집중',
+ keys:'← → 조준 · Space 떨어뜨리기 · S 흔들기 · P 일시정지 · M 소리 · N 음악 · L 순위 · H 집중',
  win:(w,h)=>`${h} · ${w} 창`,fromAd:m=>`${m} 광고에서 스캔`,
  titleH:'김 사장님의<br><em>빈 유리창</em>을 채워주세요',
  titleP:'석 달째 비어 있는 가게예요. 가게를 떨어뜨리고 합쳐서 거리에 불을 밝히고, 높은 점수로 근처 가게 쿠폰을 받으세요.',
@@ -376,7 +410,12 @@ ko:{score:'점수',best:'최고',next:'다음',shake:'흔들기',rewards:'보상
  demo:'Vitrine 대전 파일럿. 이 데모의 가게와 쿠폰은 가상입니다.',
  mAll:'세 개를 모두 완료하면',mReset:t=>t+' 후 새 미션',mDone:'미션 완료',mAllDone:'오늘의 미션 모두 완료!',
  resume:'계속하기',restart:'다시 시작',close:'닫기',sound:'효과음',music:'음악',lang:'언어',paused:'일시정지',menu:'메뉴',settings:'화면 · 소리',
- tMis:'미션',tGoal:'보상 바',tChain:'가게 줄',tRw:'보상 패널',tWal:'쿠폰 패널',tFocus:'집중 모드 · 모두 숨기기',
+ tMis:'미션',tGoal:'보상 바',tChain:'가게 줄',tRw:'보상 패널',tWal:'쿠폰 패널',tFocus:'집중 모드 · 모두 숨기기',tRank:'실시간 순위',tLb:'순위 패널',
+ board:'순위표',boardB:'순위',week:'이번 주',allTime:'전체',lbHere:w=>`${w} 창`,lbNote:'점수는 이 기기에 저장돼요. 여기서 플레이한 모두가 같은 순위표를 써요. 🏠는 거리 단골이에요. 모두 이겨 보세요.',
+ player:'플레이어',yourName:'이름을 입력하세요',seeAll:'전체 보기',lbWeek:w=>`이번 주 ${w}`,
+ rankIs:(r,w)=>`🏆 이번 주 ${w} ${r}위`,rankTop:w=>`🏆 이번 주 ${w} 1위!`,toPass:(n,p,r)=>`${p}(${r}위)까지 ${n}점`,
+ chase:(r,n,p)=>`${r}위 · ${p}까지 <b>${n}</b>`,chaseTop:'이 창 1위',passed:p=>`${p}을(를) 제쳤어요`,nowRank:r=>`이번 주 ${r}위`,
+ titleLb:(p,n)=>`🏆 다음 목표: ${p} · ${n}`,demoNoBoard:'데모 플레이는 순위표에 올라가지 않아요',
  hidden:'숨겼어요. ☰ 메뉴에서 다시 켤 수 있어요',
  opened:'김 사장님 거리에 오픈',openedS:m=>m+' 입점!',sponsored:'광고',
  unlockAt:n=>`${n}점에 쿠폰 획득`,inWallet:'지갑에 쿠폰이 있어요',until:h=>h+'까지',nowOn:'지금 유리창에 상영 중',
@@ -397,6 +436,19 @@ ko:{score:'점수',best:'최고',next:'다음',shake:'흔들기',rewards:'보상
  kimFun:['월세 받는 날이 제일 좋아.','크루아상 먹어봤어?','내 유리창, 내 자랑.','QR 찍어봐, 젊은이!','여기서 옛날에 양말 팔았지.']}};
 const tr=(k,...a)=>{const v=STR[LANG][k]!==undefined?STR[LANG][k]:STR.en[k];return typeof v==='function'?v(...a):v};
 const tierName=t=>tr('tiers')[t];
+/* ================= leaderboard (this device, per window) ================= */
+const REGS=[{n:'Mr. Kim',ko:'김 사장님',s:1000,t:3},{n:'Chef Jun',ko:'준 셰프',s:2200,t:5},{n:'Sofia',ko:'소피아',s:3300,t:6},{n:'Mira',ko:'미라',s:4500,t:7},{n:'Coach Dae',ko:'대 코치',s:6000,t:8}];
+const board=(()=>{
+ const all=()=>ls.get('board',{});
+ const weekStart=()=>{const d=new Date();d.setHours(0,0,0,0);d.setDate(d.getDate()-((d.getDay()+6)%7));return d.getTime()};
+ function list(week){const ws=weekStart();const a=(all()[WID]||[]).filter(e=>!week||e.ts>=ws).concat(REGS.map((r,i)=>({n:LANG==='ko'?r.ko:r.n,s:r.s,t:r.t,reg:true,id:'r'+i,ts:0})));
+  return a.sort((x,y)=>y.s-x.s||x.ts-y.ts)}
+ function add(e){const A=all(),a=(A[WID]||[]).concat(e).sort((x,y)=>y.s-x.s);A[WID]=a.slice(0,60);ls.set('board',A)}
+ function rename(id,n){const A=all();for(const e of A[WID]||[])if(e.id===id)e.n=n;ls.set('board',A)}
+ const rankOf=(l,id)=>l.findIndex(e=>e.id===id)+1;
+ return{list,add,rename,rankOf,reset:()=>ls.del('board')}
+})();
+const cleanName=v=>String(v||'').replace(/[\u0000-\u001f<>]/g,'').trim().slice(0,14);
 
 /* ================= window (from the QR on the glass) ================= */
 const QP=new URLSearchParams(location.search);
@@ -577,7 +629,7 @@ function addScore(p){
  S.score+=p;
  if(S.score>S.best&&!S.cheated){S.best=S.score;if(!S.newBest&&S.bestAtStart>0){S.newBest=true;banner(tr('nb'))}}
  while(S.rIdx<REWARDS.length&&S.score>=REWARDS[S.rIdx].at){const r=REWARDS[S.rIdx++];if(!S.attract)earn(r.m)}
- ui.score();ui.goal();
+ ui.score();ui.goal();ui.chase(true);
 }
 function adToast(k,big,small){const M=MER[k];toast(mChip(k),`<span class="lab">${esc(tr('sponsored'))} · ${esc(mCat(k))}</span><b>${esc(big)}</b><small>${esc(small)}</small>`,2800,'ad',`--c:${M.c};--c2:${M.c2}`)}
 function unlock(t,x,y,quiet){
@@ -610,6 +662,7 @@ function startGame(){
  S.nextT=pickTier();S.cd=0;spawnCur();
  ['#title','#over','#pause'].forEach(s=>$(s).hidden=true);
  ui.reset();street.update();kimSay(tr('kim')[0]);
+ S.lb=board.list(true);S.rank=0;S.entry=null;ui.chase();
  missions.onStart();
 }
 function spawnCur(){S.cur={t:S.nextT,x:clamp(S.aimX,L+TIERS[S.nextT].r,R-TIERS[S.nextT].r),sc:0};S.nextT=pickTier();ui.next()}
@@ -621,6 +674,8 @@ function gameOver(){
  if(S.state!=='play')return;
  S.state='over';S.cur=null;S.paused=false;SFX.over();buzz([60,40,120]);
  if(!S.cheated){ls.set('best',S.best);const runs=ls.get('runs',[]);runs.push({s:S.score,t:S.maxTier,d:dayKey()});runs.sort((a,b)=>b.s-a.s);ls.set('runs',runs.slice(0,5))}
+ if(!S.cheated&&S.score>0){S.entry={n:cleanName(ls.get('name',''))||tr('player'),s:S.score,t:S.maxTier,ts:Date.now(),id:Date.now().toString(36)+Math.random().toString(36).slice(2,6)};board.add(S.entry);ls.set('lastId',S.entry.id)}
+ ui.chase();ui.board();
  missions.onEnd();
  setTimeout(()=>{if(S.state==='over')ui.over()},900);
 }
@@ -849,7 +904,7 @@ function fit(){
  cv.style.width=W*VS+'px';cv.style.height=H*VS+'px';cv.width=Math.round(W*VS*DPR);cv.height=Math.round(H*VS*DPR);
  if(Math.abs(nk-K)>.001||!SPR.length){K=nk;buildSprites();adCache={};for(const k in neonCache)delete neonCache[k]}
  bgKey=fgKey='';render();
- requestAnimationFrame(()=>{const ot=cv.offsetTop,ol=cv.offsetLeft;$('#says').style.top=(ot+78*VS)+'px';$('#toasts').style.top=(ot+190*VS)+'px';
+ requestAnimationFrame(()=>{const ot=cv.offsetTop,ol=cv.offsetLeft;$('#says').style.top=(ot+78*VS)+'px';$('#toasts').style.top=(ot+190*VS)+'px';$('#chase').style.top=(ot+(FLOOR+16)*VS)+'px';
   ['#title','#over','#pause'].forEach(s=>{const o=$(s);o.style.inset='auto';o.style.left=ol+'px';o.style.top=ot+'px';o.style.width=W*VS+'px';o.style.height=H*VS+'px'})});
 }
 function pointerX(e){const r=cv.getBoundingClientRect();return (e.clientX-r.left)/r.width*W}
@@ -870,7 +925,8 @@ addEventListener('keydown',e=>{
  if(e.code==='ArrowLeft'||e.code==='ArrowRight'){keys[e.code]=1;e.preventDefault()}
  if(e.code==='KeyS')shake();if(e.code==='KeyM')ui.toggleSound();if(e.code==='KeyP')setPause(!S.paused);
  if(e.code==='KeyN'){SET.music=!SET.music;saveSet()}
- if(e.code==='KeyH'){SET.focus=!SET.focus;saveSet()}});
+ if(e.code==='KeyH'){SET.focus=!SET.focus;saveSet()}
+ if(e.code==='KeyL'){SFX.click();openBoard()}});
 addEventListener('keyup',e=>{delete keys[e.code]});
 document.addEventListener('visibilitychange',()=>{
  if(document.hidden){if(S.state==='play'&&!S.paused)setPause(true);if(AC&&AC.state==='running')AC.suspend()}
@@ -1020,7 +1076,7 @@ const CODES={
  slowmo:['Slow motion on / off',()=>{S.ts=S.ts===1?.35:1;toast('',`<b>${S.ts<1?'Slow motion':'Normal speed'}</b>`,1500)}],
  moon:['Low gravity on / off',()=>{grav=grav===G?G*.33:G;toast('',`<b>${grav<G?'Moon gravity':'Earth gravity'}</b>`,1500)}],
  kim:['Mr. Kim says hi',()=>{kimJoy=Date.now()+4000;kimLvl=-1;paintKim();kimSay(tr('kimFun')[Math.floor(Math.random()*5)]);setTimeout(()=>{kimLvl=-1;paintKim()},4100)}],
- reset:['Wipe coupons, missions, streak and best (for demos)',()=>{['coupons','runs','best','streak'].forEach(k=>ls.del(k));missions.reset();S.best=0;S.won=[];ui.reset();if(S.state==='title')ui.title();toast('','<b>Fresh start</b><small>Coupons, missions and best cleared</small>',2200)}]};
+ reset:['Wipe coupons, missions, streak, best and board (for demos)',()=>{['coupons','runs','best','streak','lastId'].forEach(k=>ls.del(k));board.reset();ui.board();missions.reset();S.best=0;S.won=[];ui.reset();if(S.state==='title')ui.title();toast('','<b>Fresh start</b><small>Coupons, missions, best and board cleared</small>',2200)}]};
 function runCode(c){c=String(c||'').trim().toLowerCase().replace(/[^a-z]/g,'');const f=CODES[c];if(!f){toast('',`<b>${esc(tr('unknown'))}</b>`,1400);return false}
  ui.closeModal();if(S.paused)setPause(false);resumeAudio();SFX.coupon();f[1]();return true}
 function openCodes(){openModal('🔑 '+esc(tr('codes')),b=>{
@@ -1032,6 +1088,26 @@ let logoTaps=[];
 $('#logo').addEventListener('pointerdown',()=>{const n=Date.now();logoTaps=logoTaps.filter(t=>n-t<2000);logoTaps.push(n);if(logoTaps.length>=5){logoTaps=[];openCodes()}});
 let kimTaps=0,kimTT=0;
 $('#kim').addEventListener('pointerdown',()=>{kimTaps++;clearTimeout(kimTT);kimTT=setTimeout(()=>kimTaps=0,500);if(kimTaps>=2){kimTaps=0;CODES.kim[1]()}});
+
+/* ================= leaderboard UI ================= */
+function lbRow(e,r,me){return `<div class="${me?'me':''}"><span class="rk">${r<4?['🥇','🥈','🥉'][r-1]:r}</span>${chipHTML(e.t,TIERS[e.t].s?'sp':'')}<span class="nm">${esc(e.n)}${e.reg?'<i>🏠</i>':''}</span><span class="sc">${fmt(e.s)}</span></div>`}
+function lbHTML(l,top,meId){const mr=meId?board.rankOf(l,meId):0;let h=l.slice(0,top).map((e,i)=>lbRow(e,i+1,e.id===meId)).join('');
+ if(mr>top)h+=`<div class="gap">···</div>`+lbRow(l[mr-1],mr,true);return `<div class="lb">${h}</div>`}
+function openBoard(tab){tab=tab||'week';openModal('🏆 '+esc(tr('board')),b=>{
+ const l=board.list(tab==='week'),me=ls.get('lastId','');
+ b.innerHTML=`<div class="lbt"><button data-t="week" class="${tab==='week'?'on':''}">${esc(tr('week'))}</button><button data-t="all" class="${tab==='all'?'on':''}">${esc(tr('allTime'))}</button></div>
+ <p class="fine" style="margin:0 0 8px">${esc(tr('lbHere',WID)+' · '+hood())}</p>${lbHTML(l,10,me)}<p class="fine">${esc(tr('lbNote'))}</p>`;
+ b.querySelector('.lbt').onclick=e=>{const x=e.target.closest('button');if(x&&x.dataset.t!==tab){SFX.click();openBoard(x.dataset.t)}};
+},'board')}
+function rankBlock(){
+ if(S.cheated)return `<p class="rank"><small>${esc(tr('demoNoBoard'))}</small></p>`;if(!S.entry)return '';
+ const l=board.list(true),r=board.rankOf(l,S.entry.id),ab=l[r-2];
+ return `<p class="rank">${esc(r===1?tr('rankTop',WID):tr('rankIs',r,WID))}${ab?`<small>${esc(tr('toPass',fmt(ab.s-S.score+1),ab.n,r-1))}</small>`:''}</p><div class="lbname"><input id="lbName" maxlength="14" placeholder="${esc(tr('yourName'))}" value="${esc(cleanName(ls.get('name','')))}" autocomplete="nickname" enterkeyhint="done"></div>`}
+function boardSnip(){
+ const l=board.list(true),id=S.entry&&S.entry.id,r=id?board.rankOf(l,id):0,from=r?Math.max(0,Math.min(r-2,l.length-3)):0;
+ const rows=l.slice(from,from+3).map((e,i)=>lbRow(e,from+i+1,e.id===id)).join('');
+ return `<div class="lbx"><h4><span>${esc(tr('lbWeek',WID))}</span><button id="oBoard">${esc(tr('seeAll'))} →</button></h4>
+ <div class="lb">${rows}</div></div>`}
 
 /* ================= share ================= */
 function shareScore(){
@@ -1051,7 +1127,7 @@ const ui={
  score(){$('#score').textContent=fmt(S.score);$('#best').textContent=fmt(S.best)},
  next(){const c=$('#nextc');c.style.setProperty('--c',TIERS[S.nextT].c);c.style.setProperty('--c2',TIERS[S.nextT].c2);c.querySelector('img').src=glyphURL[S.nextT]},
  shakes(){$('#shN').textContent=S.shakes;$('#shake').disabled=S.shakes<1||S.state!=='play'},
- reset(){ui.score();ui.chain();ui.shakes();ui.wallet();ui.goal();ui.missions();ui.rewards();paintKim()},
+ reset(){ui.score();ui.chain();ui.shakes();ui.wallet();ui.goal();ui.missions();ui.rewards();ui.board();paintKim()},
  unlock(t){ui.chain(t);paintKim()},
  chain(pop){$('#chain').innerHTML=TIERS.map((T,t)=>chipHTML(t,(S.state!=='title'&&S.maxTier>=t?'':'lock')+(T.s?' sp':'')+(pop===t?' pop':''))).join('')},
  goal(){
@@ -1067,33 +1143,42 @@ const ui={
   const sw=$('#sideWal');renderWallet(sw,true);wireWallet(sw,true);const wl=$('#wlist');if(wl&&!modal.hidden&&sheet.dataset.k==='wallet'){renderWallet(wl);wireWallet(wl)}},
  missions(){const n=missions.count(),b=$('#misBd');b.textContent=n+'/3';b.classList.toggle('ok',n===3);$('#sideMis').innerHTML=missions.html();const ml=$('#mlist');if(ml&&!modal.hidden&&sheet.dataset.k==='missions')ml.innerHTML=missions.html()},
  rewards(){$('#sideRw').innerHTML=rewardsHTML()},
+ board(){$('#lbTitle').textContent=tr('lbWeek',WID);$('#sideLb').innerHTML=lbHTML(board.list(true),5,ls.get('lastId',''))},
+ chase(live){const el=$('#chase');if(S.state!=='play'||S.attract){el.hidden=true;el._t='';return}
+  const l=S.lb||[],sc=S.score;let r=1;for(const e of l)if(e.s>=sc)r++;
+  if(live&&S.rank&&r<S.rank){const p=l[r-1];if(p){toast('🏆',`<b>${esc(tr('passed',p.n))}</b><small>${esc(tr('nowRank',r))}</small>`,2000);buzz(15)}}
+  S.rank=r;const t=r===1?tr('chaseTop'):tr('chase',r,fmt(l[r-2].s-sc+1),esc(l[r-2].n));
+  if(el._t!==t){el._t=t;el.innerHTML='🏆 '+t}el.hidden=false},
  title(){
   const ov=$('#title');ov.hidden=false;
   ov.innerHTML=`<div class="card"><span class="tag off">${esc(FROM_AD?tr('fromAd',mName(FROM_AD))+' · '+WID:winLabel())}</span><h1>${tr('titleH')}</h1><p>${esc(tr('titleP'))}</p>
   <div class="rwrow">${REWARDS.map(r=>`<div class="${wonToday(r.m)?'got':''}">${mChip(r.m,'sp')}${wonToday(r.m)?'✓':fmt(r.at)}</div>`).join('')}</div>
+  ${(()=>{const l=board.list(true),t=l.filter(e=>e.s>S.best).pop();return t?`<p class="hint" style="color:#fde68a">${esc(tr('titleLb',t.n,fmt(t.s)))}</p>`:''})()}
   ${streakN()?`<p class="hint">${esc(tr('streak',streakN()))}${streakN()>=3?' · '+esc(tr('streakOn')):''}</p>`:''}
   <button class="btn" id="bPlay">${esc(tr('play'))}</button>
-  <div class="row"><button class="btn ghost" id="tHow">${esc(tr('how'))}</button><button class="btn ghost misUI" id="tMis">${esc(tr('misShort'))} · ${missions.count()}/3</button></div></div>`;
-  $('#bPlay').onclick=()=>{resumeAudio();SFX.click();startGame()};$('#tHow').onclick=()=>openHow();$('#tMis').onclick=openMissions;
+  <div class="row"><button class="btn ghost" id="tHow">${esc(tr('how'))}</button><button class="btn ghost" id="tLb">🏆 ${esc(tr('boardB'))}</button><button class="btn ghost misUI" id="tMis">${esc(tr('misShort'))} · ${missions.count()}/3</button></div></div>`;
+  $('#bPlay').onclick=()=>{resumeAudio();SFX.click();startGame()};$('#tHow').onclick=()=>openHow();$('#tMis').onclick=openMissions;$('#tLb').onclick=()=>{SFX.click();openBoard()};
  },
  over(){
   const me=S.score,full=S.maxTier>=NT-1;
-  const runs=ls.get('runs',[]);let marked=false;
   const ov=$('#over');ov.hidden=false;
   ov.innerHTML=`<div class="card"><span class="tag ${full?'':'off'}">${esc(full?tr('lit'):tr('room'))}</span><div class="big">${fmt(me)}</div>
   <p style="margin:4px 0 0;color:var(--act);font-weight:700">${esc(S.cheated?tr('demoRun'):S.newBest?tr('newBest'):tr('bestIs',fmt(S.best)))}</p>
+  ${rankBlock()}
   <div class="row" style="align-items:center;margin:10px 0 2px;gap:10px">${chipHTML(S.maxTier,TIERS[S.maxTier].s?'sp':'')}<span style="text-align:left;font-size:13px;color:var(--mu)">${esc(tr('reached'))}<br><b style="color:var(--tx);font-size:15px">${esc(tierName(S.maxTier))}</b></span></div>
   ${S.won.length?`<div class="won">${S.won.map(m=>`<span>${mChip(m)}${esc(mName(m))}</span>`).join('')}</div>`:''}
   ${adCardHTML(me)}
   <button class="btn" id="again" style="margin-top:12px">${esc(tr('again'))}</button>
   <div class="row"><button class="btn ghost" id="oShare">${esc(tr('share'))}</button><button class="btn ghost" id="oWal">${esc(tr('walletB'))}</button></div>
-  ${runs.length>1?`<div class="runs"><h4>${esc(tr('runs'))}</h4>${runs.slice(0,3).map((x,i)=>{const isMe=!marked&&!S.cheated&&x.s===me&&x.d===dayKey();if(isMe)marked=true;return `<div class="${isMe?'me':''}"><span>${i+1}</span><span>${esc(tierName(x.t))}</span><b>${fmt(x.s)}</b></div>`}).join('')}</div>`:''}</div>`;
-  $('#again').onclick=()=>{SFX.click();startGame()};$('#oShare').onclick=shareScore;$('#oWal').onclick=()=>openWallet();
+  ${boardSnip()}</div>`;
+  $('#again').onclick=()=>{SFX.click();startGame()};$('#oBoard').onclick=()=>{SFX.click();openBoard()};
+  const ni=$('#lbName');if(ni){const save=()=>{const n=cleanName(ni.value);ls.set('name',n);if(S.entry){S.entry.n=n||tr('player');board.rename(S.entry.id,S.entry.n);ui.board();ov.querySelectorAll('.lb .me .nm').forEach(x=>x.textContent=S.entry.n)}};
+   ni.oninput=save;ni.onkeydown=e=>{if(e.key==='Enter')ni.blur()}}$('#oShare').onclick=shareScore;$('#oWal').onclick=()=>openWallet();
   ui.shakes();
  },
  pause(){
   const ov=$('#pause'),inGame=S.state==='play';ov.hidden=false;
-  const tg=[['music','♪ '+tr('music'),SET.music],['sound',tr('sound'),!muted],['mis',tr('tMis'),SET.mis],['goal',tr('tGoal'),SET.goal],['chain',tr('tChain'),SET.chain],['rw',tr('tRw'),SET.rw,'dk'],['wal',tr('tWal'),SET.wal,'dk'],['focus',tr('tFocus'),SET.focus,'wide']];
+  const tg=[['music','♪ '+tr('music'),SET.music],['sound',tr('sound'),!muted],['mis',tr('tMis'),SET.mis],['goal',tr('tGoal'),SET.goal],['chain',tr('tChain'),SET.chain],['rw',tr('tRw'),SET.rw,'dk'],['wal',tr('tWal'),SET.wal,'dk'],['rank','🏆 '+tr('tRank'),SET.rank],['lb',tr('tLb'),SET.lb,'dk'],['focus',tr('tFocus'),SET.focus,'wide']];
   ov.innerHTML=`<div class="card"><h1 style="font-size:24px">${esc(inGame?tr('paused'):tr('menu'))}</h1><div class="menu">
   ${inGame?`<button class="btn" id="pResume">${esc(tr('resume'))}</button><button class="btn ghost" id="pRestart"><span>${esc(tr('restart'))}</span><b>↺</b></button>`:''}
   <button class="btn ghost" id="pHow"><span>${esc(tr('how'))}</span><b>?</b></button>
@@ -1114,22 +1199,24 @@ const ui={
 };
 function setLang(l){LANG=l;ls.set('lang',l);document.documentElement.lang=l;
  document.querySelectorAll('[data-i]').forEach(e=>e.textContent=tr(e.dataset.i));
- const lab={music:tr('music'),missions:tr('missions'),wallet:tr('wallet'),menu:tr('menu')};document.querySelectorAll('[data-a]').forEach(b=>b.setAttribute('aria-label',lab[b.dataset.a]));
+ const lab={music:tr('music'),board:tr('board'),missions:tr('missions'),wallet:tr('wallet'),menu:tr('menu')};document.querySelectorAll('[data-a]').forEach(b=>b.setAttribute('aria-label',lab[b.dataset.a]));
  document.querySelectorAll('.hx').forEach(b=>b.setAttribute('aria-label','Hide'));
- adCache={};street.build();ui.goal();ui.missions();ui.rewards();ui.wallet();
+ adCache={};street.build();ui.goal();ui.missions();ui.rewards();ui.wallet();ui.board();
+ if(S.state==='play'){S.lb=board.list(true);ui.chase()}
  if(!$('#title').hidden)ui.title();if(!$('#over').hidden)ui.over();
 }
 
 /* ================= boot ================= */
 $('#bWal').onclick=()=>{resumeAudio();SFX.click();openWallet()};
 $('#bMis').onclick=()=>{resumeAudio();SFX.click();openMissions()};
+$('#bLb').onclick=()=>{resumeAudio();SFX.click();openBoard()};
 $('#bMus').onclick=()=>{SET.music=!SET.music;saveSet();resumeAudio();if(!SET.music)music.stop()};
 $('#bMenu').onclick=()=>{resumeAudio();SFX.click();if(S.state==='play')setPause(true);else ui.pause()};
 $('#goal').onclick=()=>{resumeAudio();openHow('rw')};
 $('#shake').onclick=shake;
 document.querySelectorAll('.hx').forEach(b=>b.onclick=()=>{SET[b.dataset.hide]=false;saveSet();toast('',`<b>${esc(tr('hidden'))}</b>`,2200)});
 addEventListener('pointerdown',()=>resumeAudio(),{once:true,capture:true});
-window.__sim={startGame,update,drop,shake,S,runCode};
+window.__sim={startGame,update,drop,shake,S,runCode,board,gameOver};
 if(QP.has('og'))document.documentElement.classList.add('og');
 const fontsReady=Promise.race([document.fonts?document.fonts.ready:Promise.resolve(),new Promise(r=>setTimeout(r,1500))]);
 Promise.all([loadGlyphs(),fontsReady]).then(()=>{

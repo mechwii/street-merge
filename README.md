@@ -28,6 +28,15 @@ A merge puzzle set in an empty shop window. Mr. Kim's ground-floor shop has been
 
 Coupons go to the in-game wallet with a QR code, are valid 24 hours, one per shop per day. Staff redeem them by holding the green bar.
 
+## Leaderboard
+
+Every window has its own weekly board (🏆 button, or `L`). Scores are saved on the device, so everyone who plays on the same phone, tablet or laptop shares one board, and they type their name on the game-over screen.
+
+- Five street regulars 🏠 are always on the board to chase: Mr. Kim 1,000 · Chef Jun 2,200 · Sofia 3,300 · Mira 4,500 · Coach Dae 6,000.
+- During a game, a live pill under the floor shows your rank and how many points you need to pass the next player, with a pop-up each time you pass someone.
+- The game-over screen shows your rank this week and how close you were to the next spot.
+- Tabs for This week and All time. Demo runs (secret codes) are never posted.
+
 ## Extras
 
 - **Music:** a generative lo-fi loop (no audio files) that muffles when the game is paused. Toggle with the ♪ button or `N`.
@@ -50,7 +59,7 @@ Open with `` ` `` or `/`, by tapping the Vitrine logo 5 times, or with ↑↑↓
 | SLOWMO | Slow motion on/off |
 | MOON | Low gravity on/off |
 | KIM | Mr. Kim says hi (or double-tap him) |
-| RESET | Clears coupons, missions and best, for a fresh demo |
+| RESET | Clears coupons, missions, best and the leaderboard, for a fresh demo |
 
 Runs that use a code are marked DEMO and don't save a best score.
 
