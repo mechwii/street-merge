@@ -28,6 +28,10 @@ A merge puzzle set in an empty shop window. Mr. Kim's ground-floor shop has been
 
 Coupons go to the in-game wallet with a QR code, are valid 24 hours, one per shop per day. Staff redeem them by holding the green bar.
 
+## Trailer
+
+A 30-second trailer plays inside the game: **▶ Watch the trailer** on the start screen or in ☰ Menu. Direct links: [open the game with the trailer](https://mechwii.github.io/street-merge/?trailer) · [trailer.mp4](https://mechwii.github.io/street-merge/trailer.mp4).
+
 ## Leaderboard
 
 Every window has its own weekly board (🏆 button, or `L`). Scores are saved on the device, so everyone who plays on the same phone, tablet or laptop shares one board, and they type their name on the game-over screen.

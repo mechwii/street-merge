@@ -244,6 +244,11 @@ body.cheat #demoTag{display:inline-block}
 .cgrid button{text-align:left;padding:9px 11px;border-radius:12px;background:#ffffff0a;border:1px solid var(--ln);font-size:12px;color:var(--mu);font-weight:500;line-height:1.3}
 .cgrid button b{display:block;color:var(--tx);font-size:13px;letter-spacing:.06em}
 .cgrid button:hover{border-color:#a78bfa66}
+/* trailer */
+.trl{display:inline-flex;align-items:center;gap:8px;margin-top:10px;font-size:13.5px;font-weight:700;color:var(--act);background:none}
+.trl i{font-style:normal;display:grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--ac);color:#fff;font-size:10px;padding-left:2px}
+.vid{width:100%;border-radius:16px;background:#000;display:block;aspect-ratio:16/9}
+#sheet[data-k="trailer"]{max-width:960px;width:calc(100% - 24px)}
 /* leaderboard */
 #chase{position:absolute;left:50%;top:12px;transform:translate(-50%,-50%);z-index:2;pointer-events:none;background:rgba(17,14,32,.82);border:1px solid #a78bfa40;border-radius:999px;padding:4px 11px;font-size:11.5px;font-weight:700;color:#d8d3f0;white-space:nowrap;max-width:90%;overflow:hidden;text-overflow:ellipsis;transition:opacity .25s;font-variant-numeric:tabular-nums}
 #chase b{color:#fde68a}#chase[hidden]{display:none}
@@ -367,7 +372,7 @@ en:{score:'Score',best:'Best',next:'Next',shake:'Shake',rewards:'Rewards',missio
  demo:'Vitrine pilot · Daejeon. Shops and coupons in this demo are simulated.',
  mAll:'Finish all three to win',mReset:t=>'New missions in '+t,mDone:'Mission complete',mAllDone:'All missions done!',
  resume:'Resume',restart:'Restart',close:'Close',sound:'Sound',music:'Music',lang:'Language',paused:'Paused',menu:'Menu',settings:'Display & sound',
- tMis:'Missions',tGoal:'Reward bar',tChain:'Shop row',tRw:'Rewards panel',tWal:'Coupons panel',tFocus:'Focus mode · hide everything',tRank:'Live rank',kimLose:'Wait… too many shops at once!',tLb:'Board panel',
+ tMis:'Missions',tGoal:'Reward bar',tChain:'Shop row',tRw:'Rewards panel',tWal:'Coupons panel',tFocus:'Focus mode · hide everything',tRank:'Live rank',trailer:'Watch the trailer',trailerS:'30 s',kimLose:'Wait… too many shops at once!',tLb:'Board panel',
  board:'Leaderboard',boardB:'Board',week:'This week',allTime:'All time',lbHere:w=>`Window ${w}`,lbNote:'Scores are saved on this device, so everyone who plays here shares this board. 🏠 marks the street regulars: beat them all.',
  player:'Player',yourName:'Type your name',seeAll:'See all',lbWeek:w=>`This week at ${w}`,
  rankIs:(r,w)=>`🏆 #${r} this week at ${w}`,rankTop:w=>`🏆 #1 this week at ${w}!`,toPass:(n,p,r)=>`${n} more points to pass ${p} (#${r})`,
@@ -410,7 +415,7 @@ ko:{score:'점수',best:'최고',next:'다음',shake:'흔들기',rewards:'보상
  demo:'Vitrine 대전 파일럿. 이 데모의 가게와 쿠폰은 가상입니다.',
  mAll:'세 개를 모두 완료하면',mReset:t=>t+' 후 새 미션',mDone:'미션 완료',mAllDone:'오늘의 미션 모두 완료!',
  resume:'계속하기',restart:'다시 시작',close:'닫기',sound:'효과음',music:'음악',lang:'언어',paused:'일시정지',menu:'메뉴',settings:'화면 · 소리',
- tMis:'미션',tGoal:'보상 바',tChain:'가게 줄',tRw:'보상 패널',tWal:'쿠폰 패널',tFocus:'집중 모드 · 모두 숨기기',tRank:'실시간 순위',kimLose:'잠깐… 가게가 너무 많이 몰려와!',tLb:'순위 패널',
+ tMis:'미션',tGoal:'보상 바',tChain:'가게 줄',tRw:'보상 패널',tWal:'쿠폰 패널',tFocus:'집중 모드 · 모두 숨기기',tRank:'실시간 순위',trailer:'트레일러 보기',trailerS:'30초',kimLose:'잠깐… 가게가 너무 많이 몰려와!',tLb:'순위 패널',
  board:'순위표',boardB:'순위',week:'이번 주',allTime:'전체',lbHere:w=>`${w} 창`,lbNote:'점수는 이 기기에 저장돼요. 여기서 플레이한 모두가 같은 순위표를 써요. 🏠는 거리 단골이에요. 모두 이겨 보세요.',
  player:'플레이어',yourName:'이름을 입력하세요',seeAll:'전체 보기',lbWeek:w=>`이번 주 ${w}`,
  rankIs:(r,w)=>`🏆 이번 주 ${w} ${r}위`,rankTop:w=>`🏆 이번 주 ${w} 1위!`,toPass:(n,p,r)=>`${p}(${r}위)까지 ${n}점`,
@@ -808,6 +813,7 @@ function neonSprite(txt,c){const key=txt+c+K;if(neonCache[key])return neonCache[
  return neonCache[key]=cc}
 let shX=0,shY=0;
 function render(){
+ if(!SPR.length){fit();if(!SPR.length)return}
  const sh=S.shakeT>0?S.shakeT:0;shX=sh>0?rnd(-1,1)*sh*9:0;shY=sh>0?rnd(-1,1)*sh*9:0;
  ctx.setTransform(K,0,0,K,0,0);ctx.drawImage(bgLayer(),0,0,W,H);
  ctx.setTransform(K,0,0,K,shX*K,shY*K);
@@ -1097,6 +1103,9 @@ $('#logo').addEventListener('pointerdown',()=>{const n=Date.now();logoTaps=logoT
 let kimTaps=0,kimTT=0;
 $('#kim').addEventListener('pointerdown',()=>{kimTaps++;clearTimeout(kimTT);kimTT=setTimeout(()=>kimTaps=0,500);if(kimTaps>=2){kimTaps=0;CODES.kim[1]()}});
 
+/* ================= trailer ================= */
+function openTrailer(){if(AC)music.stop();openModal('▶ '+esc(tr('trailer')),b=>{b.innerHTML=`<video class="vid" src="trailer.mp4" controls autoplay playsinline preload="auto"></video>`},'trailer')}
+
 /* ================= leaderboard UI ================= */
 function lbRow(e,r,me){return `<div class="${me?'me':''}"><span class="rk">${r<4?['🥇','🥈','🥉'][r-1]:r}</span>${chipHTML(e.t,TIERS[e.t].s?'sp':'')}<span class="nm">${esc(e.n)}${e.reg?'<i>🏠</i>':''}</span><span class="sc">${fmt(e.s)}</span></div>`}
 function lbHTML(l,top,meId){const mr=meId?board.rankOf(l,meId):0;let h=l.slice(0,top).map((e,i)=>lbRow(e,i+1,e.id===meId)).join('');
@@ -1164,8 +1173,9 @@ const ui={
   ${(()=>{const l=board.list(true),t=l.filter(e=>e.s>S.best).pop();return t?`<p class="hint" style="color:#fde68a">${esc(tr('titleLb',t.n,fmt(t.s)))}</p>`:''})()}
   ${streakN()?`<p class="hint">${esc(tr('streak',streakN()))}${streakN()>=3?' · '+esc(tr('streakOn')):''}</p>`:''}
   <button class="btn" id="bPlay">${esc(tr('play'))}</button>
+  <button class="trl" id="tTrl"><i>▶</i>${esc(tr('trailer'))} · ${esc(tr('trailerS'))}</button>
   <div class="row"><button class="btn ghost" id="tHow">${esc(tr('how'))}</button><button class="btn ghost" id="tLb">🏆 ${esc(tr('boardB'))}</button><button class="btn ghost misUI" id="tMis">${esc(tr('misShort'))} · ${missions.count()}/3</button></div></div>`;
-  $('#bPlay').onclick=()=>{resumeAudio();SFX.click();startGame()};$('#tHow').onclick=()=>openHow();$('#tMis').onclick=openMissions;$('#tLb').onclick=()=>{SFX.click();openBoard()};
+  $('#bPlay').onclick=()=>{resumeAudio();SFX.click();startGame()};$('#tHow').onclick=()=>openHow();$('#tMis').onclick=openMissions;$('#tLb').onclick=()=>{SFX.click();openBoard()};$('#tTrl').onclick=()=>{SFX.click();openTrailer()};
  },
  over(){
   const me=S.score,full=S.maxTier>=NT-1;
@@ -1190,6 +1200,7 @@ const ui={
   ov.innerHTML=`<div class="card"><h1 style="font-size:24px">${esc(inGame?tr('paused'):tr('menu'))}</h1><div class="menu">
   ${inGame?`<button class="btn" id="pResume">${esc(tr('resume'))}</button><button class="btn ghost" id="pRestart"><span>${esc(tr('restart'))}</span><b>↺</b></button>`:''}
   <button class="btn ghost" id="pHow"><span>${esc(tr('how'))}</span><b>?</b></button>
+  <button class="btn ghost" id="pTrl"><span>${esc(tr('trailer'))}</span><b>▶</b></button>
   <button class="btn ghost" id="pLang"><span>${esc(tr('lang'))}</span><b>${LANG==='ko'?'한국어':'English'}</b></button></div>
   <p class="mh">${esc(tr('settings'))}</p><div class="tg">${tg.map(([k,l,on,c])=>`<button data-k="${k}" class="${on?'on':''} ${c||''}">${esc(l)}</button>`).join('')}</div>
   ${inGame?'':`<div class="menu"><button class="btn" id="pClose">${esc(tr('close'))}</button></div>`}<p class="fine">${esc(tr('demo'))}</p></div>`;
@@ -1198,12 +1209,13 @@ const ui={
   if(c('#pRestart'))c('#pRestart').onclick=()=>{S.state='over';$('#pause').hidden=true;S.paused=false;S.lastStart=0;startGame()};
   if(c('#pClose'))c('#pClose').onclick=()=>{ov.hidden=true};
   c('#pHow').onclick=()=>openHow();
+  c('#pTrl').onclick=()=>openTrailer();
   c('#pLang').onclick=()=>{setLang(LANG==='ko'?'en':'ko');ui.pause()};
   ov.querySelector('.tg').onclick=e=>{const b=e.target.closest('button');if(!b)return;const k=b.dataset.k;resumeAudio();
    if(k==='sound'){ui.toggleSound()}else{SET[k]=!SET[k];saveSet()}SFX.click();ui.pause();fit()};
  },
  toggleSound(){muted=!muted;ls.set('mute',muted);if(!muted){resumeAudio();SFX.click()}},
- closeModal(){modal.hidden=true;sheet.dataset.k='';openId=null}
+ closeModal(){sheet.querySelectorAll('video').forEach(v=>v.pause());if(sheet.dataset.k==='trailer'&&SET.music&&AC)music.start();modal.hidden=true;sheet.dataset.k='';openId=null}
 };
 function setLang(l){LANG=l;ls.set('lang',l);document.documentElement.lang=l;
  document.querySelectorAll('[data-i]').forEach(e=>e.textContent=tr(e.dataset.i));
@@ -1224,6 +1236,7 @@ $('#goal').onclick=()=>{resumeAudio();openHow('rw')};
 $('#shake').onclick=shake;
 document.querySelectorAll('.hx').forEach(b=>b.onclick=()=>{SET[b.dataset.hide]=false;saveSet();toast('',`<b>${esc(tr('hidden'))}</b>`,2200)});
 addEventListener('pointerdown',()=>resumeAudio(),{once:true,capture:true});
+if(QP.has('trailer'))setTimeout(()=>openTrailer(),300);
 window.__sim={startGame,update,drop,shake,S,runCode,board,gameOver};
 if(QP.has('og'))document.documentElement.classList.add('og');
 const fontsReady=Promise.race([document.fonts?document.fonts.ready:Promise.resolve(),new Promise(r=>setTimeout(r,1500))]);
